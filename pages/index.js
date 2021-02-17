@@ -1,42 +1,28 @@
-import Head from 'next/head';
-import { useAuth } from '../lib/auth';
-import styles from '../styles/Home.module.css';
+import { Button, Heading, Text, Code } from '@chakra-ui/react';
+import { useAuth } from '@/lib/auth';
 
 export default function Home() {
 	const auth = useAuth();
 
 	return (
-		<div className={styles.container}>
-			<Head>
-				<title>Create Next App</title>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+		<div>
+			<main>
+				<Heading as="h1" fontSize="6xl">
+					Fast Feedback
+				</Heading>
 
-			<main className={styles.main}>
-				<h1 className={styles.title}>Fast Feedback</h1>
-
-				<p className={styles.description}>
-					Get started by editing{' '}
-					<code className={styles.code}>pages/index.js</code>
-				</p>
-
-				<button onClick={(e) => auth.signinWithGithub()}>Sign in</button>
-				{auth?.user && (
-					<button onClick={(e) => auth.signout()}>Sign Out</button>
+				{!auth?.user && (
+					<Button onClick={(e) => auth.signinWithGithub()}>Sign in</Button>
 				)}
-				<div>{auth?.user?.email}</div>
+				{auth?.user && (
+					<>
+						<Text>
+							Current User: <Code>{auth?.user?.email}</Code>
+						</Text>
+						<Button onClick={(e) => auth.signout()}>Sign Out</Button>
+					</>
+				)}
 			</main>
-
-			<footer className={styles.footer}>
-				<a
-					href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Powered by{' '}
-					<img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-				</a>
-			</footer>
 		</div>
 	);
 }
